@@ -7,7 +7,7 @@ WHERE  day(Cumpleaños) = day(now()) && month(Cumpleaños) = month(now())
 
 Consulta 2:
 
-SELECT Telefono,Email,Nombre_Contacto
-FROM Contacto
+SELECT Telefono,Email,Nombre
+FROM Contacto, Cliente
 WHERE  day(Cumpleaños) = day(now()) && month(Cumpleaños) = month(now()) 
 
