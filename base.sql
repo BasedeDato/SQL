@@ -1,6 +1,6 @@
 --
 -- MySQL 5.5.38
--- Fri, 22 Aug 2014 19:32:15 +0000
+-- Fri, 22 Aug 2014 20:09:26 +0000
 --
 
 CREATE TABLE `Ciudades` (
@@ -28,15 +28,14 @@ CREATE TABLE `Cliente` (
 CREATE TABLE `Contacto` (
    `Cuit` int(11),
    `Telefono` decimal(10,0),
-   `Cumpleaños` date,
+   `Cumpleanos` date,
    `ID_Contacto` int(3) not null,
    `Nombre_Contacto` varchar(20),
    `Email` varchar(60),
    PRIMARY KEY (`ID_Contacto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `Contacto` (`Cuit`, `Telefono`, `Cumpleaños`, `ID_Contacto`, `Nombre_Contacto`, `Email`) VALUES 
-('94112462', '3514810221', '2014-08-22', '1', 'Armando', 'ajshdkahsdja@jkashjda.com');
+-- [Table `Contacto` is empty]
 
 CREATE TABLE `Provincia` (
    `Provincia` varchar(20),
@@ -45,6 +44,3 @@ CREATE TABLE `Provincia` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- [Table `Provincia` is empty]
-
-
-
