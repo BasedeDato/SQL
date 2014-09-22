@@ -1,0 +1,9 @@
+INSERT INTO`Zona`(`ID_Zona`,`ID_Ciudad`,`Nombre_Zona`)
+VALUES
+('1','275'                ,'noroeste'), 
+('2','80'                ,'norte'), 
+('3','352'                ,'sur'), 
+('4','12'                ,'este'), 
+('5','316'                ,'oeste'), 
+('6','276'                ,'sudeste'), 
+('7','36'                ,'sudoeste'), 
