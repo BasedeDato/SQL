@@ -3,13 +3,46 @@ import random
 import string
 from faker import Faker
 fake = Faker()
+comm_lst = []
 act_lst = []
 city_lst = []
 client_lst = []
 mach_lst = []
+contact_lst = []
 vend_lst = []
-zonas = { 1: 'noroeste', 2: 'noreste', 2: 'norte', 3: 'sur', 4: 'este', \
-        5: 'oeste', 6: 'sudeste', 7: 'sudoeste'}
+zone_lst = []
+#zonas = { 0: 'noroeste', 1: 'noreste', 2: 'norte', 3: 'sur', 4: 'este', \
+        #        5: 'oeste', 6: 'sudeste', 7: 'sudoeste'}
+provincias = [
+"Buenos Aires",
+"Catamarca",
+"Chaco",
+"Chubut",
+"Cordoba",
+"Corrientes",
+"Entre Rios",
+"Formosa",
+"Jujuy",
+"La Pampa",
+"La Rioja",
+"Mendoza",
+"Misiones",
+"Neuquen",
+"Rio Negro",
+"Salta",
+"San Juan",
+"San Luis",
+"Santa Cruz",
+"Santa Fe",
+"Santiago del Estero",
+"Tierra del Fuego",
+"Tucuman"
+]
+
+zone_client = []
+mach_client = []
+client_vend = []
+client_comm = []
 
 def repeat_c_name(name, lst):
     for each in lst:
@@ -27,6 +60,15 @@ def draw_name():
     else:
         return str(name)
 
+def draw_contact():
+    name = fake.name()
+    if contact_lst == []:
+        return name
+    if repeat_c_name(name, contact_lst):
+        draw_contact()
+    else:
+        return str(name)
+
 def draw_city():
     name = fake.city()
     assert(name!=None)
@@ -40,88 +82,184 @@ def draw_city():
 def draw_job():
     name = fake.job()
     if act_lst == []:
-        return name
+        return str(name)
     if repeat_c_name(name, act_lst) or ',' in name:
         draw_job()
     else:
         return str(name)
 
+class Provincia():
+    def __init__(self, id_provincia, name):
+        self.id_provincia = id_provincia
+        self.name = name
+
 class Cliente():
-    def __init__(self):
-        self.cuit = None
-        self.name = None
-        self.razonsocial = None
-        self.id_ciudad = None
-        self.id_prov = None
-        self.id_act = None
-        self.codigopostal = None
+    def __init__(self, cuit, name, razonsocial, id_ciudad, id_prov, id_act):
+        self.cuit = cuit
+        self.name = name
+        self.razonsocial = razonsocial
+        self.id_ciudad = id_ciudad
+        self.id_prov = id_prov
+        self.id_act = id_act
 
 class Ciudad():
-    def __init__(self):
-        self.id = None
-        self.name = None
-        self.id_zona = None
-        self.id_prov = None
+    def __init__(self, id, name, id_prov, codigopostal):
+        self.id = id
+        self.name = name
+        self.id_prov = id_prov
+        self.codigopostal = codigopostal
 
 class Actividad():
-    def __init__(self):
-        self.id = None
-        self.name = None
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
 
 class Maquina():
-    def __init__(self):
-        self.id = None
-        self.name = None
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
 
 class Vendedor():
-    def __init__(self):
-        self.id = None
-        self.name = None
-        self.id_zona = None
+    def __init__(self, id, name, id_zona):
+        self.id = id
+        self.name = name
+        self.id_zona = id_zona
+
+class Contacto():
+    def __init__(self, id, name, c_cuit, cumpleanos, phone, mail):
+        self.id = id
+        self.name = name
+        self.c_cuit = c_cuit
+        self.cumpleanos = cumpleanos
+        self.phone = phone
+        self.mail = mail
+
+class Comunicacion():
+    def __init__(self, id, id_vend, id_act, comunicacion):
+        self.id = id
+        self.id_vendedor = id_vend
+        self.id_actividad = id_act
+        self.comunicacion_realizada = comunicacion
+
+class Zona():
+    def __init__(self, id, id_c, name):
+        self.id = id
+        self.id_ciudad = id_c
+        self.name = name
+
+def random_cuit():
+    return str(random.randint(000000000,999999999))
+
+def random_zone_id():
+    return str(random.randint(0,len(zone_lst)))
+
+def random_province_id():
+    return str(random.randint(0,len(provincias)))
+
+def random_c_post():
+    return str(random.randint(00000,99999))
+
+def random_city_name():
+    return (random.choice(city_lst).name)
+
+def random_city_id():
+    return (random.choice(city_lst).id)
+
+def random_act_id():
+    return (random.choice(act_lst).id)
+
+def random_phone():
+    return (str(random.randint(0000000001, 9999999999)))
+
+def create_zonas():
+    for i in range(len(city_lst)):
+        z = Zona(i, random.choice(city_lst).id, fake.street_name())
+        zone_lst.append(z)
+    for i in range(200):
+        z = Zona(i, random.choice(city_lst).id, fake.street_name())
+        zone_lst.append(z)
 
 def create_vendedor(n):
     for i in range(n):
-        v = Vendedor()
-        v.id = i
-        v.name = draw_name()
-        v.id_zona = str(random.randint(1,7))
+        v = Vendedor(i, draw_name(), random_zone_id())
+        #v.id = i
+        #v.name = draw_name()
+        #v.id_zona = str(random.randint(1,7))
         vend_lst.append(v)
 
 def create_city(n):
     for i in range(n):
-        c = Ciudad()
-        c.id = i
-        c.name = draw_city()
-        c.id_prov = str(random.randint(1,23))
-        c.id_zona = str(random.randint(1,7))
+        c = Ciudad(i, draw_city(), random_province_id(),
+                    random_c_post())
+        #c.id = i
+        #c.name = draw_city()
+        #c.id_prov = str(random.randint(0,22))
+        #c.codigopostal = str(random.randint(00000, 99999))
+        #c.id_zona = str(random.randint(1,7))
         city_lst.append(c)
 
 def create_client(n):
     for i in range(n):
-        c = Cliente()
-        c.name = draw_name()
-        c.id_ciudad = random.choice(city_lst).id  
-        c.razonsocial = randomword()
-        c.id_act = random.choice(act_lst).id
-        c.id_prov = str(random.randint(1,23))
-        c.codigopostal = str(random.randint(00000, 99999))
-        c.cuit = str(random.randint(100000000,999999999))   
+        c = Cliente(random_cuit(), draw_name(), randomword(), random_city_id(), 
+                    random_province_id(), random_act_id())
+        #c.name = draw_name()
+        #c.id_ciudad = random.choice(city_lst).id  
+        #c.razonsocial = randomword()
+        #c.id_act = random.choice(act_lst).id
+        #c.id_prov = str(random.randint(1,23))
+        #c.cuit = str(random.randint(100000000,999999999))   
         client_lst.append(c)
+
+def create_contacto(n):
+    for i in range(len(client_lst)):
+        c = Contacto(i, draw_contact(), random_cuit(), fake.date(), random_phone(), fake.safe_email())
+        #c.name = draw_name()
+        #c.id = i
+        #c.c_cuit = client_lst[i].cuit
+        #c.cumpleanos = fake.date() 
+        #c.mail = fake.safe_email()
+        contact_lst.append(c)
 
 def create_activities(n):
     for i in range(n):
-        j = Actividad()
-        j.id = i
-        j.name = draw_job()
+        j = Actividad(i, draw_job())
+        #j.id = i
+        #j.name = draw_job()
         act_lst.append(j)
 
 def create_maquinas(n):
     for i in range(n):
-        m = Maquina()
-        m.id = i
-        m.name = randomword() 
+        m = Maquina(i, randomword())
+        #m.id = i
+        #m.name = randomword() 
         mach_lst.append(m)
 
+def create_comunicacion(n):
+    for i in range(len(vend_lst)):
+        c = Comunicacion(i, vend_lst[i].id, act_lst[i].id, fake.date())
+        comm_lst.append(c)
+
+def create_maquina_zone():
+    m = Maquina(len(mach_lst), "Pipita-9000")
+    mach_lst.append(m)
+    for i in range(7):
+        c = random.choice(client_lst)
+        mach_client.append((c.cuit, m.id))
+        zone_client.append((c.cuit, i))
+    for i in range(len(client_lst)):
+        mach_client.append((client_lst[i].cuit, random.choice(mach_lst).id))
+    for i in range(len(client_lst)):
+        zone_client.append((client_lst[i].cuit, random_zone_id()))
+
+def create_client_comm_vend():
+    for i in range(len(client_lst)):
+        c = client_lst[i]
+        v = random.choice(vend_lst)
+        client_vend.append((c.cuit, v.id))
+        com = Comunicacion(i, v.id, c.id_act, fake.date())
+        comm_lst.append(com)
+        client_comm.append((c.cuit, com.id))
+        
 def clean_strings(lst):
     for i in range(len(lst)):
        lst[i].name = re.sub(r'[^a-zA-Z0-9]',' ', str(lst[i].name))
@@ -181,7 +319,7 @@ def generate_date():
 def dump_act_table():
     f = open('bases/ActivdadDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Activdad`(`ID_Actividad`,`Nombre_Actividad`)")
+    f.write("`Actividad`(`ID_Actividad`,`Nombre_Actividad`)")
     f.write("\nVALUES\n")
     for i in range(len(act_lst)):
         f.write("('"+ str(act_lst[i].id) + "','" + str(act_lst[i].name) + "' ), \n")
@@ -191,24 +329,42 @@ def dump_act_table():
 def dump_commun_table():
     f = open('bases/CommunicationDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Comunicaciones`(`ID_Comunicacion`,`ID_Actividad`,`ID_Vendedor`)")
+    f.write("`Comunicaciones`(`ID_Comunicacion`,`ID_Actividad`,`ID_Vendedor`,`Comunicacion_Realizada`)")
     f.write("\nVALUES\n")
-    for i in range(len(vend_lst)):
-        f.write("('"+ str(i) + "','" + str(random.choice(act_lst).id) + "'\
-                ,'"+ str(random.randint(0,200)) +"'), \n")
+    for i in range(len(comm_lst)):
+        f.write("('"+ str(comm_lst[i].id) + "','" + str(comm_lst[i].id_actividad) + "'\
+                ,'"+ str(comm_lst[i].id_vendedor) +"','"+comm_lst[i].comunicacion_realizada+"'), \n")
 
     f.close()
 
 def dump_city_table():
     f = open('bases/CiudadDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Ciudad`(`ID_Ciudad`,`Nombre_Ciudad`,`ID_Zona`,`ID_Provincia`)")
+    f.write("`Ciudad`(`ID_Ciudad`,`Nombre_Ciudad`,`ID_Provincia`,\
+            `Codigo_Postal`)")
     f.write("\nVALUES\n")
     for i in range(len(city_lst)):
-        f.write("('"+ str(city_lst[i].id) + "','" + str(city_lst[i].name) + "'\
-                ,'"+ str(random.randint(1,7)) +"','"+str(city_lst[i].id_prov)+"'), \n")
+        f.write("('"+ str(city_lst[i].id) + "','" + str(city_lst[i].name) +"','"+str(city_lst[i].id_prov)+
+                "','"+str(city_lst[i].codigopostal)+"'), \n")
 
     f.close()
+
+def dump_city_province_table():
+    f = open('bases/Cuidad_ProvinciaDB', 'w')
+    f.write("INSERT INTO")
+    f.write("`Ciudad_ProvinciaDB`(`ID_Ciudad`,`ID_Provincia`)")
+    f.write("\nVALUES\n")
+    for i in range(len(city_lst)):
+        f.write("('"+str(city_lst[i].id)+"','"+str(city_lst[i].id_prov)+"'), \n")
+
+def dump_provincia_table():
+    f = open('bases/ProvinciaDB', 'w')
+    f.write("INSERT INTO")
+    f.write("`ProvinciaDB`(`ID_Provincia`,`Nombre_Provincia`)")
+    f.write("\nVALUES\n")
+    for i in range(len(provincias)):
+        f.write("('"+str(i)+"','"+str(provincias[i])+"'), \n")
+
 
 def dump_vendedor_table():
     f = open('bases/VendedorDB', 'w')
@@ -217,7 +373,7 @@ def dump_vendedor_table():
     f.write("\nVALUES\n")
     for i in range(len(vend_lst)):
         f.write("('"+ str(vend_lst[i].id) + "','" + str(vend_lst[i].name) + "'\
-                ,'"+ str(random.randint(1,7)) +"'), \n")
+                ,'"+ str(vend_lst[i].id_zona) +"'), \n")
 
     f.close()
 
@@ -236,9 +392,9 @@ def dump_zona_table():
     f.write("INSERT INTO") 
     f.write("`Zona`(`ID_Zona`,`ID_Ciudad`,`Nombre_Zona`)")
     f.write("\nVALUES\n")
-    for i in range(1,8):
-        f.write("('"+ str(i) + "','" + str(random.randint(0,400)) + "'\
-                ,'"+ str(zonas[i]) +"'), \n")
+    for i in range(len(zone_lst)):
+        f.write("('"+ str(zone_lst[i].id) +"','" + str(zone_lst[i].id_ciudad) + "'\
+                ,'"+ str(zone_lst[i].name) +"'), \n")
 
     f.close()
 
@@ -246,13 +402,22 @@ def dump_client_table():
     f = open('bases/ClienteDB', 'w')
     f.write("INSERT INTO") 
     f.write("`Cliente`(`Cuit`,`Nombre`,`Razon_Social`,`ID_Ciudad`,`ID_Provincia`\
-        ,`ID_Actividad`,`Codigo_Postal`)")
+        ,`ID_Actividad`)")
     f.write("\nVALUES\n")
     for i in range(len(client_lst)):
         f.write("('"+ str(client_lst[i].cuit) + "','" + str(client_lst[i].name) + "'\
-                ,'"+ str(client_lst[i].razonsocial) +"','"+str(client_lst[i].id_ciudad)+"','"+ str(client_lst[i].id_prov) +"','"+ str(client_lst[i].id_act) +"',\
-                '"+ str(client_lst[i].codigopostal) +"'), \n")
+                ,'"+ str(client_lst[i].razonsocial) +"','"+str(client_lst[i].id_ciudad)+"','"+ str(client_lst[i].id_prov) +"','"+ str(client_lst[i].id_act) +"'), \n")
 
+    f.close()
+
+def dump_contacto_table():
+    f = open('bases/ContactoDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Contacto`(`Cuit`,`Telefono`,`Cumpleanos`,`Nombre_Contacto`,`Email`\
+        ,`ID_Contacto`)")
+    f.write("\nVALUES\n")
+    for i in range (len(contact_lst)):
+        f.write("('"+str(contact_lst[i].c_cuit)+"','"+str(contact_lst[i].phone)+"','"+str(contact_lst[i].cumpleanos)+"','"+str(contact_lst[i].name)+"','"+str(contact_lst[i].mail)+"','"+str(contact_lst[i].id)+"'), \n")
     f.close()
 
 def dump_campaign_table():
@@ -274,7 +439,7 @@ def dump_campana_commun_table():
     f.write("`Campana_Comunicacion`(`ID_Campana`,`ID_Comunicacion`)")
     f.write("\nVALUES\n")
     for i in range(len(act_lst)):
-        f.write("('"+ str(random.randint(0,150)) + "','" + str(random.randint(0,200)) + "' ), \n")
+        f.write("('"+ str(random.randint(0,150)) + "','" + str(random.choice(comm_lst).id) + "' ), \n")
 
     f.close()
 
@@ -283,8 +448,8 @@ def dump_zona_ciudad_table():
     f.write("INSERT INTO") 
     f.write("`Zona_Ciudad`(`ID_Zona`,`ID_Ciudad`)")
     f.write("\nVALUES\n")
-    for i in range(len(city_lst)):
-        f.write("('"+ str(random.randint(1,7)) + "','" + str(city_lst[i].id) + "' ), \n")
+    for i in range(len(zone_lst)):
+        f.write("('"+ str(zone_lst[i].id) + "','" + str(zone_lst[i].id_ciudad) + "' ), \n")
 
     f.close()
 
@@ -293,8 +458,8 @@ def dump_cliente_vendedor_table():
     f.write("INSERT INTO") 
     f.write("`Cliente_Vendedor`(`Cuit`,`ID_Vendedor`)")
     f.write("\nVALUES\n")
-    for i in range(len(vend_lst)):
-        f.write("('"+ str(client_lst[i].cuit) + "','" + str(random.choice(vend_lst).id) + "' ), \n")
+    for i in range(len(client_vend)):
+        f.write("('"+ str(client_vend[i][0]) + "','" + str(client_vend[i][1]) + "' ), \n")
 
     f.close()
 
@@ -313,31 +478,105 @@ def dump_client_maquina_table():
     f.write("INSERT INTO") 
     f.write("`Cliente_Maquina`(`Cuit`,`ID_Maquina`)")
     f.write("\nVALUES\n")
-    for i in range(len(mach_lst)):
-        f.write("('"+ str(random.choice(client_lst).cuit) + "','" + str(mach_lst[i].id) + "' ), \n")
+    for i in range(len(mach_client)):
+        f.write("('"+ str(mach_client[i][0]) + "','" + str(mach_client[i][1]) + "' ), \n")
 
     f.close()
 
+def dump_cliente_zona():
+    f = open('bases/Cliente_ZonaDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Cliente_Zona`(`Cuit`,`ID_Zona`)")
+    f.write("\nVALUES\n")
+    for i in range(len(zone_client)):
+        f.write("('"+ str(zone_client[i][0]) + "','" + str(zone_client[i][1]) + "' ), \n")
+    f.close()
+
+def dump_maquina_campana():
+    f = open('bases/Campana_MaquinaDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Campana_Maquina`(`ID_Campana`,`ID_Maquina`)")
+    f.write("\nVALUES\n")
+    for i in range(len(mach_lst)):
+        f.write("('"+ str(random.randint(0,len(mach_lst))) + "','" + str(mach_lst[i].id) + "' ), \n")
+    f.close()
+
+def dump_cliente_actividad():
+    f = open('bases/Cliente_ActividadDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Cliente_Actividad`(`Cuit`,`ID_Actividad`)")
+    f.write("\nVALUES\n")
+    for i in range(len(client_lst)):
+        f.write("('"+ str(client_lst[i].cuit) + "','" + str(client_lst[i].id_act) + "' ), \n")
+    f.close()
+
+def dump_client_commun():
+    f = open('bases/Cliente_ComunicacionDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Cliente_Comunicaciones`(`Cuit`,`ID_Comunicacion`)")
+    f.write("\nVALUES\n")
+    for i in range(len(client_comm)):
+        f.write("('"+ str(client_comm[i][0]) + "','" + str(client_comm[i][1]) + "' ), \n")
+    f.close()
+
+def dump_ciudad_provincia():
+    f = open('bases/Ciudad_ProvinciaDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Cuidad_Provincia`(`ID_Ciudad`,`ID_Provincia`)")
+    f.write("\nVALUES\n")
+    for i in range(len(city_lst)):
+        f.write("('"+ str(city_lst[i].id) + "','" + str(random.randint(0,23)) + "' ), \n")
+    f.close()
+
+def dump_client_city():
+    f = open('bases/Cliente_CiudadDB', 'w')
+    f.write("INSERT INTO") 
+    f.write("`Cliente_Ciudad`(`Cuit`,`ID_Ciudad`)")
+    f.write("\nVALUES\n")
+    for i in range(len(client_lst)):
+        f.write("('"+ str(client_lst[i].cuit) + "','" + str(client_lst[i].id_ciudad) + "' ), \n")
+    f.close()
+
+
 create_activities(400)
 clean_strings(act_lst)
+for each in act_lst:
+    if each.name is None:
+        act_lst.remove(each)
 create_city(150)
 clean_strings(city_lst)
+create_zonas()
+clean_strings(zone_lst)
 create_client(500)
 clean_strings(client_lst)
 create_maquinas(500)
 clean_strings(mach_lst)
 create_vendedor(200)
 clean_strings(vend_lst)
+create_contacto(600)
+clean_strings(contact_lst)
+create_client_comm_vend()
+create_maquina_zone()
 dump_act_table()
 dump_commun_table()
 dump_city_table()
+dump_provincia_table()
 dump_vendedor_table()
 dump_maquina_table()
 dump_zona_table()
 dump_client_table()
 dump_campaign_table()
-dump_campana_commun_table()
-dump_zona_ciudad_table()
-dump_cliente_vendedor_table()
+
+dump_city_province_table()
+
+dump_contacto_table()
 dump_client_contacto_table()
 dump_client_maquina_table()
+dump_cliente_zona()
+dump_cliente_actividad()
+dump_client_commun()
+dump_client_city()
+dump_cliente_vendedor_table()
+
+dump_campana_commun_table()
+dump_maquina_campana()
