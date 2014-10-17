@@ -11,8 +11,8 @@ mach_lst = []
 contact_lst = []
 vend_lst = []
 zone_lst = []
-#zonas = { 0: 'noroeste', 1: 'noreste', 2: 'norte', 3: 'sur', 4: 'este', \
-        #        5: 'oeste', 6: 'sudeste', 7: 'sudoeste'}
+zonas = { 0: 'noroeste', 1: 'noreste', 2: 'norte', 3: 'sur', 4: 'este', \
+                5: 'oeste', 6: 'sudeste', 7: 'sudoeste'}
 provincias = [
 "Buenos Aires",
 "Catamarca",
@@ -83,7 +83,7 @@ def draw_job():
     name = fake.job()
     if act_lst == []:
         return str(name)
-    if repeat_c_name(name, act_lst) or ',' in name:
+    if repeat_c_name(name, act_lst):
         draw_job()
     else:
         return str(name)
@@ -142,16 +142,15 @@ class Comunicacion():
         self.comunicacion_realizada = comunicacion
 
 class Zona():
-    def __init__(self, id, id_c, name):
+    def __init__(self, id, name):
         self.id = id
-        self.id_ciudad = id_c
         self.name = name
 
 def random_cuit():
     return str(random.randint(000000000,999999999))
 
 def random_zone_id():
-    return str(random.randint(0,len(zone_lst)))
+    return str(random.randint(0,7))
 
 def random_province_id():
     return str(random.randint(0,len(provincias)))
@@ -171,16 +170,9 @@ def random_act_id():
 def random_phone():
     return (str(random.randint(0000000001, 9999999999)))
 
-def create_zonas():
-    for i in range(len(city_lst)):
-        z = Zona(i, random.choice(city_lst).id, fake.street_name())
-        zone_lst.append(z)
-    for i in range(200):
-        z = Zona(i, random.choice(city_lst).id, fake.street_name())
-        zone_lst.append(z)
 
 def create_vendedor(n):
-    for i in range(n):
+    for i in range(20):
         v = Vendedor(i, draw_name(), random_zone_id())
         #v.id = i
         #v.name = draw_name()
@@ -228,7 +220,7 @@ def create_activities(n):
         act_lst.append(j)
 
 def create_maquinas(n):
-    for i in range(n):
+    for i in range(5):
         m = Maquina(i, randomword())
         #m.id = i
         #m.name = randomword() 
@@ -242,7 +234,7 @@ def create_comunicacion(n):
 def create_maquina_zone():
     m = Maquina(len(mach_lst), "Pipita-9000")
     mach_lst.append(m)
-    for i in range(7):
+    for i in range(8):
         c = random.choice(client_lst)
         mach_client.append((c.cuit, m.id))
         zone_client.append((c.cuit, i))
@@ -390,11 +382,10 @@ def dump_maquina_table():
 def dump_zona_table():
     f = open('bases/ZonaDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Zona`(`ID_Zona`,`ID_Ciudad`,`Nombre_Zona`)")
+    f.write("`Zona`(`ID_Zona`,`Nombre_Zona`)")
     f.write("\nVALUES\n")
-    for i in range(len(zone_lst)):
-        f.write("('"+ str(zone_lst[i].id) +"','" + str(zone_lst[i].id_ciudad) + "'\
-                ,'"+ str(zone_lst[i].name) +"'), \n")
+    for each in zonas:
+        f.write("('"+ str(each) +"','"+ str(zonas[each]) +"'), \n")
 
     f.close()
 
@@ -507,7 +498,7 @@ def dump_cliente_actividad():
     f.write("`Cliente_Actividad`(`Cuit`,`ID_Actividad`)")
     f.write("\nVALUES\n")
     for i in range(len(client_lst)):
-        f.write("('"+ str(client_lst[i].cuit) + "','" + str(client_lst[i].id_act) + "' ), \n")
+        f.write("('"+ str(client_lst[i].cuit) + "','" + str(random.choice(client_lst).id_act) + "' ), \n")
     f.close()
 
 def dump_client_commun():
@@ -538,22 +529,17 @@ def dump_client_city():
     f.close()
 
 
-create_activities(400)
+create_activities(200)
 clean_strings(act_lst)
-for each in act_lst:
-    if each.name is None:
-        act_lst.remove(each)
 create_city(150)
 clean_strings(city_lst)
-create_zonas()
-clean_strings(zone_lst)
 create_client(500)
 clean_strings(client_lst)
 create_maquinas(500)
 clean_strings(mach_lst)
 create_vendedor(200)
 clean_strings(vend_lst)
-create_contacto(600)
+create_contacto(300)
 clean_strings(contact_lst)
 create_client_comm_vend()
 create_maquina_zone()
