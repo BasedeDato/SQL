@@ -316,6 +316,7 @@ def dump_act_table():
     for i in range(len(act_lst)):
         f.write("('"+ str(act_lst[i].id) + "','" + str(act_lst[i].name) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_commun_table():
@@ -327,6 +328,7 @@ def dump_commun_table():
         f.write("('"+ str(comm_lst[i].id) + "','" + str(comm_lst[i].id_actividad) + "'\
                 ,'"+ str(comm_lst[i].id_vendedor) +"','"+comm_lst[i].comunicacion_realizada+"'), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_city_table():
@@ -339,24 +341,30 @@ def dump_city_table():
         f.write("('"+ str(city_lst[i].id) + "','" + str(city_lst[i].name) +"','"+str(city_lst[i].id_prov)+
                 "','"+str(city_lst[i].codigopostal)+"'), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_city_province_table():
     f = open('bases/Cuidad_ProvinciaDB', 'w')
     f.write("INSERT INTO")
-    f.write("`Ciudad_ProvinciaDB`(`ID_Ciudad`,`ID_Provincia`)")
+    f.write("`Ciudad_Provincia`(`ID_Ciudad`,`ID_Provincia`)")
     f.write("\nVALUES\n")
     for i in range(len(city_lst)):
         f.write("('"+str(city_lst[i].id)+"','"+str(city_lst[i].id_prov)+"'), \n")
+    
+    f.write("\n")
+    f.close()
 
 def dump_provincia_table():
     f = open('bases/ProvinciaDB', 'w')
     f.write("INSERT INTO")
-    f.write("`ProvinciaDB`(`ID_Provincia`,`Nombre_Provincia`)")
+    f.write("`Provincia`(`ID_Provincia`,`Nombre_Provincia`)")
     f.write("\nVALUES\n")
     for i in range(len(provincias)):
         f.write("('"+str(i)+"','"+str(provincias[i])+"'), \n")
 
+    f.write("\n")
+    f.close()
 
 def dump_vendedor_table():
     f = open('bases/VendedorDB', 'w')
@@ -367,6 +375,7 @@ def dump_vendedor_table():
         f.write("('"+ str(vend_lst[i].id) + "','" + str(vend_lst[i].name) + "'\
                 ,'"+ str(vend_lst[i].id_zona) +"'), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_maquina_table():
@@ -377,6 +386,7 @@ def dump_maquina_table():
     for i in range(len(mach_lst)):
         f.write("('"+ str(mach_lst[i].id) + "','" + str(mach_lst[i].name) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_zona_table():
@@ -387,6 +397,7 @@ def dump_zona_table():
     for each in zonas:
         f.write("('"+ str(each) +"','"+ str(zonas[each]) +"'), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_client_table():
@@ -399,6 +410,7 @@ def dump_client_table():
         f.write("('"+ str(client_lst[i].cuit) + "','" + str(client_lst[i].name) + "'\
                 ,'"+ str(client_lst[i].razonsocial) +"','"+str(client_lst[i].id_ciudad)+"','"+ str(client_lst[i].id_prov) +"','"+ str(client_lst[i].id_act) +"'), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_contacto_table():
@@ -409,6 +421,7 @@ def dump_contacto_table():
     f.write("\nVALUES\n")
     for i in range (len(contact_lst)):
         f.write("('"+str(contact_lst[i].c_cuit)+"','"+str(contact_lst[i].phone)+"','"+str(contact_lst[i].cumpleanos)+"','"+str(contact_lst[i].name)+"','"+str(contact_lst[i].mail)+"','"+str(contact_lst[i].id)+"'), \n")
+    f.write("\n")
     f.close()
 
 def dump_campaign_table():
@@ -422,6 +435,7 @@ def dump_campaign_table():
                 ,'"+ generate_date() +"','"+str(random.choice(act_lst).id)+"',\
                 '"+ str(random.choice(mach_lst).id) +"'), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_campana_commun_table():
@@ -432,6 +446,7 @@ def dump_campana_commun_table():
     for i in range(len(act_lst)):
         f.write("('"+ str(random.randint(0,150)) + "','" + str(random.choice(comm_lst).id) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_zona_ciudad_table():
@@ -442,6 +457,7 @@ def dump_zona_ciudad_table():
     for i in range(len(zone_lst)):
         f.write("('"+ str(zone_lst[i].id) + "','" + str(zone_lst[i].id_ciudad) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_cliente_vendedor_table():
@@ -452,6 +468,7 @@ def dump_cliente_vendedor_table():
     for i in range(len(client_vend)):
         f.write("('"+ str(client_vend[i][0]) + "','" + str(client_vend[i][1]) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_client_contacto_table():
@@ -462,6 +479,7 @@ def dump_client_contacto_table():
     for i in range(len(client_lst)):
         f.write("('"+ str(client_lst[i].cuit) + "','" + str(random.randint(0,999)) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_client_maquina_table():
@@ -472,6 +490,7 @@ def dump_client_maquina_table():
     for i in range(len(mach_client)):
         f.write("('"+ str(mach_client[i][0]) + "','" + str(mach_client[i][1]) + "' ), \n")
 
+    f.write("\n")
     f.close()
 
 def dump_cliente_zona():
@@ -481,6 +500,7 @@ def dump_cliente_zona():
     f.write("\nVALUES\n")
     for i in range(len(zone_client)):
         f.write("('"+ str(zone_client[i][0]) + "','" + str(zone_client[i][1]) + "' ), \n")
+    f.write("\n")
     f.close()
 
 def dump_maquina_campana():
@@ -488,8 +508,9 @@ def dump_maquina_campana():
     f.write("INSERT INTO") 
     f.write("`Campana_Maquina`(`ID_Campana`,`ID_Maquina`)")
     f.write("\nVALUES\n")
-    for i in range(len(mach_lst)):
+    for i in range(len(150)):
         f.write("('"+ str(random.randint(0,len(mach_lst))) + "','" + str(mach_lst[i].id) + "' ), \n")
+    f.write("\n")
     f.close()
 
 def dump_cliente_actividad():
@@ -499,6 +520,7 @@ def dump_cliente_actividad():
     f.write("\nVALUES\n")
     for i in range(len(client_lst)):
         f.write("('"+ str(client_lst[i].cuit) + "','" + str(random.choice(client_lst).id_act) + "' ), \n")
+    f.write("\n")
     f.close()
 
 def dump_client_commun():
@@ -508,6 +530,7 @@ def dump_client_commun():
     f.write("\nVALUES\n")
     for i in range(len(client_comm)):
         f.write("('"+ str(client_comm[i][0]) + "','" + str(client_comm[i][1]) + "' ), \n")
+    f.write("\n")
     f.close()
 
 def dump_ciudad_provincia():
@@ -517,6 +540,7 @@ def dump_ciudad_provincia():
     f.write("\nVALUES\n")
     for i in range(len(city_lst)):
         f.write("('"+ str(city_lst[i].id) + "','" + str(random.randint(0,23)) + "' ), \n")
+    f.write("\n")
     f.close()
 
 def dump_client_city():
@@ -526,6 +550,7 @@ def dump_client_city():
     f.write("\nVALUES\n")
     for i in range(len(client_lst)):
         f.write("('"+ str(client_lst[i].cuit) + "','" + str(client_lst[i].id_ciudad) + "' ), \n")
+    f.write("\n")
     f.close()
 
 
