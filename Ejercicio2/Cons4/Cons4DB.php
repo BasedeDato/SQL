@@ -9,10 +9,10 @@
 		
 		if($vendedor && $vendedor != "Seleccione Un Vendedor"){
 			$query = "select ID_Vendedor, count(Comunicacion_Realizada) as cant_com_realizada, month(Comunicacion_Realizada) as mes
-					from Comunicaciones
-					where date(Comunicacion_Realizada) <= date(now() and ID_Vendedor = (Select ID_Vendedor from Vendedor 
-					where (Nombre_Vendedor = '".$vendedor."')))
-					group by ID_Vendedor, month(Comunicacion_Realizada)";
+						from Comunicaciones
+						where date(Comunicacion_Realizada) < date(now()) and ID_Vendedor=(Select ID_Vendedor from Vendedor
+						where Nombre_Vendedor = '".$vendedor."')
+						group by ID_Vendedor, month(Comunicacion_Realizada)";
 		}else{
 			echo "Vendedor no seleccionado<br>";
 			echo "Vuelva atras y seleccione un vendedor";
