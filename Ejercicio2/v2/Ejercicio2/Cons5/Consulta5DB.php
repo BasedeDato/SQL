@@ -6,10 +6,14 @@
 			$connection = mysql_connect("kali", "db2014_g09", "margarita88") or die("¡Error al conectarse!".mysql_error());
 			set_time_limit (50);
 			$zona = $_GET['Zona'];
-			$query = "select distinct(ID_Maquina), ID_Zona
-					from
-					Cliente_Maquina natural join Cliente_Zona
-					where ID_Zona =(Select) and ID_Zona not in ();";
+                        $query = "
+                            select distinct(ID_Maquina) 
+                            from ((select distinct(ID_Maquina) from Cliente_Maquina 
+                                    natural join 
+                                    Cliente_Zona where ID_Zona not in (0,2,3)) as table2) 
+                            union 
+                                  (select ID_Maquina from Cliente_Maquina natural join Cliente_Zona where ID_Zona = 1)
+                        ";
 
 			mysql_select_db("db2014_g09", $connection);
 			
