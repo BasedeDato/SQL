@@ -53,7 +53,7 @@
 			<select id = "Zona" name = "Zona">
 				<?php
 				
-				$connection = mysql_connect("localhost", "root", "", "db2014_g09") or die("¡Error al conectarse!".mysql_error());
+				$connection = mysql_connect("kali", "db2014_g09", "margarita88") or die("¡Error al conectarse!".mysql_error());
 				
 				$query = "SELECT Nombre_Zona FROM `Zona`";
 		
