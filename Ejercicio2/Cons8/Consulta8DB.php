@@ -7,7 +7,7 @@
 			$query = "select Nombre_Ciudad, count(ID_Maquina) as cantidad_De_Maquinas, ID_Maquina
 					from Cliente_Maquina natural join Cliente_Ciudad natural join Ciudad
 					group by Nombre_Ciudad, ID_Maquina
-					order by Nombre_Ciudad asc, ID_Maquina desc";
+					order by Nombre_Ciudad asc, cantidad_De_Maquinas desc";
 
 	
 			mysql_select_db("db2014_g09", $connection);
