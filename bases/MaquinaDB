@@ -1,8 +1,9 @@
-INSERT INTO`Maquina`(`ID_Maquina`,`Nombre_Maquina`)
+INSERT INTO`Maquina`(`Nombre_Maquina`)
 VALUES
-('0','ospxwdp' ), 
-('1','bwhnqtw' ), 
-('2','mnlc' ), 
-('3','jppe' ), 
-('4','nugnqb' ), 
-('5','Pipita-9000' ), 
+('kndta' ), 
+('zrha' ), 
+('yuvbiwmwz' ), 
+('zsdszh' ), 
+('qllbukge' ), 
+('Pipita-9000' ), 
+

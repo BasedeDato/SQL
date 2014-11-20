@@ -1,10 +1,11 @@
-INSERT INTO`Zona`(`ID_Zona`,`Nombre_Zona`)
+INSERT INTO`Zona`(`Nombre_Zona`)
 VALUES
-('0','noroeste'), 
-('1','noreste'), 
-('2','norte'), 
-('3','sur'), 
-('4','este'), 
-('5','oeste'), 
-('6','sudeste'), 
-('7','sudoeste'), 
+('noroeste'), 
+('noreste'), 
+('norte'), 
+('sur'), 
+('este'), 
+('oeste'), 
+('sudeste'), 
+('sudoeste'), 
+
