@@ -251,6 +251,14 @@ def create_client_comm_vend():
         com = Comunicacion(i, v.id, c.id_act, fake.date())
         comm_lst.append(com)
         client_comm.append((c.cuit, com.id))
+    for i in range(500):
+        c = random.choice(client_lst)
+        v = random.choice(vend_lst)
+        client_vend.append((c.cuit, v.id))
+        com = Comunicacion(i, v.id, c.id_act, fake.date())
+        comm_lst.append(com)
+        client_comm.append((c.cuit, com.id))
+
         
 def clean_strings(lst):
     for i in range(len(lst)):
@@ -311,10 +319,10 @@ def generate_date():
 def dump_act_table():
     f = open('bases/ActivdadDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Actividad`(`ID_Actividad`,`Nombre_Actividad`)")
+    f.write("`Actividad`(`Nombre_Actividad`)")
     f.write("\nVALUES\n")
     for i in range(len(act_lst)):
-        f.write("('"+ str(act_lst[i].id) + "','" + str(act_lst[i].name) + "' ), \n")
+        f.write("('"+ str(act_lst[i].name) + "' ), \n")
 
     f.write("\n")
     f.close()
@@ -322,10 +330,10 @@ def dump_act_table():
 def dump_commun_table():
     f = open('bases/CommunicationDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Comunicaciones`(`ID_Comunicacion`,`ID_Actividad`,`ID_Vendedor`,`Comunicacion_Realizada`)")
+    f.write("`Comunicaciones`(`ID_Actividad`,`ID_Vendedor`,`Comunicacion_Realizada`)")
     f.write("\nVALUES\n")
     for i in range(len(comm_lst)):
-        f.write("('"+ str(comm_lst[i].id) + "','" + str(comm_lst[i].id_actividad) + "'\
+        f.write("('"+ str(comm_lst[i].id_actividad) + "'\
                 ,'"+ str(comm_lst[i].id_vendedor) +"','"+comm_lst[i].comunicacion_realizada+"'), \n")
 
     f.write("\n")
@@ -334,11 +342,11 @@ def dump_commun_table():
 def dump_city_table():
     f = open('bases/CiudadDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Ciudad`(`ID_Ciudad`,`Nombre_Ciudad`,`ID_Provincia`,\
+    f.write("`Ciudad`(`Nombre_Ciudad`,`ID_Provincia`,\
             `Codigo_Postal`)")
     f.write("\nVALUES\n")
     for i in range(len(city_lst)):
-        f.write("('"+ str(city_lst[i].id) + "','" + str(city_lst[i].name) +"','"+str(city_lst[i].id_prov)+
+        f.write("('" + str(city_lst[i].name) +"','"+str(city_lst[i].id_prov)+
                 "','"+str(city_lst[i].codigopostal)+"'), \n")
 
     f.write("\n")
@@ -358,10 +366,10 @@ def dump_city_province_table():
 def dump_provincia_table():
     f = open('bases/ProvinciaDB', 'w')
     f.write("INSERT INTO")
-    f.write("`Provincia`(`ID_Provincia`,`Nombre_Provincia`)")
+    f.write("`Provincia`(`Nombre_Provincia`)")
     f.write("\nVALUES\n")
     for i in range(len(provincias)):
-        f.write("('"+str(i)+"','"+str(provincias[i])+"'), \n")
+        f.write("('"+str(provincias[i])+"'), \n")
 
     f.write("\n")
     f.close()
@@ -369,10 +377,10 @@ def dump_provincia_table():
 def dump_vendedor_table():
     f = open('bases/VendedorDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Vendedor`(`ID_Vendedor`,`Nombre_Vendedor`,`ID_Zona`)")
+    f.write("`Vendedor`(`Nombre_Vendedor`,`ID_Zona`)")
     f.write("\nVALUES\n")
     for i in range(len(vend_lst)):
-        f.write("('"+ str(vend_lst[i].id) + "','" + str(vend_lst[i].name) + "'\
+        f.write("('"+ str(vend_lst[i].name) + "'\
                 ,'"+ str(vend_lst[i].id_zona) +"'), \n")
 
     f.write("\n")
@@ -381,10 +389,10 @@ def dump_vendedor_table():
 def dump_maquina_table():
     f = open('bases/MaquinaDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Maquina`(`ID_Maquina`,`Nombre_Maquina`)")
+    f.write("`Maquina`(`Nombre_Maquina`)")
     f.write("\nVALUES\n")
     for i in range(len(mach_lst)):
-        f.write("('"+ str(mach_lst[i].id) + "','" + str(mach_lst[i].name) + "' ), \n")
+        f.write("('" + str(mach_lst[i].name) + "' ), \n")
 
     f.write("\n")
     f.close()
@@ -392,10 +400,10 @@ def dump_maquina_table():
 def dump_zona_table():
     f = open('bases/ZonaDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Zona`(`ID_Zona`,`Nombre_Zona`)")
+    f.write("`Zona`(`Nombre_Zona`)")
     f.write("\nVALUES\n")
     for each in zonas:
-        f.write("('"+ str(each) +"','"+ str(zonas[each]) +"'), \n")
+        f.write("('"+ str(zonas[each]) +"'), \n")
 
     f.write("\n")
     f.close()
@@ -427,11 +435,11 @@ def dump_contacto_table():
 def dump_campaign_table():
     f = open('bases/CampanaDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Campana`(`ID_Campana`,`Fecha_Inicio`,`Fecha_Fin`,`ID_Actividad`,\
+    f.write("`Campana`(`Fecha_Inicio`,`Fecha_Fin`,`ID_Actividad`,\
             `ID_Maquina`)")
     f.write("\nVALUES\n")
     for i in range(150):
-        f.write("('"+ str(i) + "','" + generate_date() + "'\
+        f.write("('" + generate_date() + "'\
                 ,'"+ generate_date() +"','"+str(random.choice(act_lst).id)+"',\
                 '"+ str(random.choice(mach_lst).id) +"'), \n")
 
@@ -485,10 +493,10 @@ def dump_client_contacto_table():
 def dump_client_maquina_table():
     f = open('bases/Cliente_MaquinaDB', 'w')
     f.write("INSERT INTO") 
-    f.write("`Cliente_Maquina`(`Cuit`,`ID_Maquina`)")
+    f.write("`Cliente_Maquina`(`Cuit`,`ID_Maquina`,`Cantidad`)")
     f.write("\nVALUES\n")
     for i in range(len(mach_client)):
-        f.write("('"+ str(mach_client[i][0]) + "','" + str(mach_client[i][1]) + "' ), \n")
+        f.write("('"+ str(mach_client[i][0]) + "','" + str(mach_client[i][1]) + "','" + str(random.randint(0, 200)) +"' ), \n")
 
     f.write("\n")
     f.close()
@@ -508,8 +516,8 @@ def dump_maquina_campana():
     f.write("INSERT INTO") 
     f.write("`Campana_Maquina`(`ID_Campana`,`ID_Maquina`)")
     f.write("\nVALUES\n")
-    for i in range(len(150)):
-        f.write("('"+ str(random.randint(0,len(mach_lst))) + "','" + str(mach_lst[i].id) + "' ), \n")
+    for i in range(300):
+        f.write("('"+ str(random.randint(0,150)) + "','" + str(random.choice(mach_lst).id) + "' ), \n")
     f.write("\n")
     f.close()
 
